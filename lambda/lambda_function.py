@@ -83,7 +83,7 @@ class GptQueryIntentHandler(AbstractRequestHandler):
             # Join with 'or' for the last question
             if len(followup_questions) > 1:
                 response += ", ".join([f"'{q}'" for q in followup_questions[:-1]])
-                response += f", or '{followup_questions[-1]}'"
+                response += f", o '{followup_questions[-1]}'"
             else:
                 response += f"'{followup_questions[0]}'"
             response += ". <break time=\"0.5s\"/> Qué te gustaría saber?"
@@ -186,12 +186,12 @@ def generate_followup_questions(conversation_context, query, response, count=2):
         # Add conversation context
         if conversation_context:
             last_q, last_a = conversation_context[-1]
-            messages.append({"role": "user", "content": f"Previous Q: {last_q}"})
+            messages.append({"role": "user", "content": f"Pregunta anterior: {last_q}"})
             messages.append({"role": "assistant", "content": last_a})
         
-        messages.append({"role": "user", "content": f"Current Q: {query}"})
+        messages.append({"role": "user", "content": f"Pregunta actual: {query}"})
         messages.append({"role": "assistant", "content": response})
-        messages.append({"role": "user", "content": "Follow-up questions (separated by |):"})
+        messages.append({"role": "user", "content": "Preguntas de continuación (separadas por |):"})
         
         data = {
             "model": "gpt-3.5-turbo",  # Using a faster model for this
